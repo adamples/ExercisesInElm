@@ -142,7 +142,11 @@ lineBetween p1 p2 =
     ]
     []
 
-dimension: Point2d -> Point2d -> Svg t
+techText: String -> Point2d -> Svg msg
+techText s (Point2d (px, py)) =
+  Svg.text_ [ x (toString px), y (toString py), fontFamily "ISOCPEUR" ] [ Svg.text s ]
+
+dimension: Point2d -> Point2d -> Svg msg
 dimension a b =
   case Point2d.directionFrom a b of
     Just parallel ->
@@ -161,6 +165,7 @@ dimension a b =
         , lineBetween a a2
         , lineBetween b b2
         , lineBetween a1 b1
+        , techText (toString (Point2d.distanceFrom a b)) (Point2d.interpolate a2 b2 0.5)
         ]
     Nothing -> g [] []
 
